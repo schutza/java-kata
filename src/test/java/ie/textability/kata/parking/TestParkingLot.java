@@ -110,5 +110,47 @@ public class TestParkingLot {
     }
 
 
+    @Test
+    void testWithVanParkingLotFullExceptionThrown() {
+        // given setup
+        // when
+        Exception exception = assertThrows(ParkingLotFullException.class, () -> {
+            parkingLot
+                .withVan().withVan() // large
+                .withVan() // regular
+                .withVan(); // no space left
+        });
+        // then
+        assertEquals(exception.getMessage(), "FULL");
+    }
+
+    @Test
+    void testWithCarParkingLotFullExceptionThrown() {
+        // given setup
+        // when
+        Exception exception = assertThrows(ParkingLotFullException.class, () -> {
+            parkingLot
+                .withCar().withCar().withCar().withCar() // regular
+                .withCar().withCar().withCar().withCar() // compact
+                .withCar(); // no space left
+        });
+        // then
+        assertEquals(exception.getMessage(), "FULL");
+    }
+
+    @Test
+    void testWithMotorcycleParkingLotFullExceptionThrown() {
+        // given setup
+        // when
+        Exception exception = assertThrows(ParkingLotFullException.class, () -> {
+            parkingLot
+                .withMotorcycle().withMotorcycle().withMotorcycle().withMotorcycle() // compact
+                .withMotorcycle().withMotorcycle().withMotorcycle().withMotorcycle() // regular
+                .withMotorcycle().withMotorcycle() // large
+                .withMotorcycle(); // no space left
+        });
+        // then
+        assertEquals(exception.getMessage(), "FULL");
+    }
 
 }

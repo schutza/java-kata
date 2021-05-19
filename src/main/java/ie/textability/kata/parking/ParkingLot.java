@@ -72,7 +72,7 @@ public class ParkingLot {
         } else if (canAccommodateCarInCompactSpots()) {
             occupiedSpace.get(ParkingSpotType.COMPACT).add(VehicleType.CAR);
         } else {
-            throw new RuntimeException("FULL");
+            throw new ParkingLotFullException("FULL");
         }
         return this;
     }
@@ -94,7 +94,7 @@ public class ParkingLot {
             occupiedSpace.get(ParkingSpotType.REGULAR).add(VehicleType.VAN);
             occupiedSpace.get(ParkingSpotType.REGULAR).add(VehicleType.VAN);
         } else {
-            throw new RuntimeException("FULL");
+            throw new ParkingLotFullException("FULL");
         }
         return this;
     }
