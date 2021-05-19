@@ -17,7 +17,7 @@ public class CapacityAnalyser {
     }
 
     public boolean isEmpty() {
-        if (parkingLot.getCompactSpots().isEmpty() && parkingLot.getRegularSpots().isEmpty() && parkingLot.getLargeSpots().isEmpty()) {
+        if (parkingLot.getVehiclesInCompactSpots().isEmpty() && parkingLot.getVehiclesInRegularSpots().isEmpty() && parkingLot.getVehiclesInLargeSpots().isEmpty()) {
             return true;
         }
         return false;
@@ -25,9 +25,9 @@ public class CapacityAnalyser {
 
     public boolean isFull() {
         if (
-            parkingLot.getCompactSpots().size() >= parkingLot.getCompactSpotsCapacity()
-                && parkingLot.getRegularSpots().size() >= parkingLot.getRegularSpotsCapacity()
-                && parkingLot.getLargeSpots().size() >= parkingLot.getLargeSpotsCapacity()
+            parkingLot.getVehiclesInCompactSpots().size() >= parkingLot.getCompactSpotsCapacity()
+                && parkingLot.getVehiclesInRegularSpots().size() >= parkingLot.getRegularSpotsCapacity()
+                && parkingLot.getVehiclesInLargeSpots().size() >= parkingLot.getLargeSpotsCapacity()
         ) {
             return true;
         }
@@ -53,9 +53,9 @@ public class CapacityAnalyser {
      */
     public Map<ParkingSpotType, Integer> remainingCapacity() {
         Map<ParkingSpotType, Integer> remainingCapacity = Map.ofEntries(
-            Map.entry(ParkingSpotType.COMPACT, parkingLot.getCompactSpotsCapacity() - parkingLot.getCompactSpots().size()),
-            Map.entry(ParkingSpotType.REGULAR, parkingLot.getRegularSpotsCapacity() - parkingLot.getRegularSpots().size()),
-            Map.entry(ParkingSpotType.LARGE, parkingLot.getLargeSpotsCapacity() - parkingLot.getLargeSpots().size())
+            Map.entry(ParkingSpotType.COMPACT, parkingLot.getCompactSpotsCapacity() - parkingLot.getVehiclesInCompactSpots().size()),
+            Map.entry(ParkingSpotType.REGULAR, parkingLot.getRegularSpotsCapacity() - parkingLot.getVehiclesInRegularSpots().size()),
+            Map.entry(ParkingSpotType.LARGE, parkingLot.getLargeSpotsCapacity() - parkingLot.getVehiclesInLargeSpots().size())
         );
         return remainingCapacity;
     }
@@ -84,11 +84,11 @@ public class CapacityAnalyser {
     private int occupancyForVan() {
         VehicleType vehicleType = VehicleType.VAN;
         // check in large spots
-        int vanOccupancyLargeSpots = parkingLot.getLargeSpots()
+        int vanOccupancyLargeSpots = parkingLot.getVehiclesInLargeSpots()
             .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
         // check in regular spots
-        int vanOccupancyRegularSpots = parkingLot.getRegularSpots()
+        int vanOccupancyRegularSpots = parkingLot.getVehiclesInRegularSpots()
             .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
 
@@ -98,11 +98,11 @@ public class CapacityAnalyser {
     private int occupancyForCar() {
         VehicleType vehicleType = VehicleType.CAR;
         // check in large spots
-        int carOccupancyRegularSpots = parkingLot.getRegularSpots()
+        int carOccupancyRegularSpots = parkingLot.getVehiclesInRegularSpots()
             .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
         // check in regular spots
-        int carOccupancyCompactSpots = parkingLot.getCompactSpots()
+        int carOccupancyCompactSpots = parkingLot.getVehiclesInCompactSpots()
             .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
 
@@ -112,15 +112,15 @@ public class CapacityAnalyser {
     private int occupancyForMotorcycle() {
         VehicleType vehicleType = VehicleType.MOTORCYCLE;
         // check in all spots - compact spots first
-        int motorcycleOccupancyCompactSpots = parkingLot.getCompactSpots()
+        int motorcycleOccupancyCompactSpots = parkingLot.getVehiclesInCompactSpots()
             .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
         // check in all spots - regular spots first
-        int motorcycleOccupancyRegularSpots = parkingLot.getRegularSpots()
+        int motorcycleOccupancyRegularSpots = parkingLot.getVehiclesInRegularSpots()
             .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
         // check in all spots - large spots first
-        int motorcycleOccupancyLargeSpots = parkingLot.getLargeSpots()
+        int motorcycleOccupancyLargeSpots = parkingLot.getVehiclesInLargeSpots()
             .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
 

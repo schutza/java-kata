@@ -118,15 +118,15 @@ public class ParkingLot {
         return maxCapacity.get(ParkingSpotType.LARGE);
     }
 
-    public List<VehicleType> getCompactSpots() {
+    public List<VehicleType> getVehiclesInCompactSpots() {
         return occupiedSpace.get(ParkingSpotType.COMPACT);
     }
 
-    public List<VehicleType> getRegularSpots() {
+    public List<VehicleType> getVehiclesInRegularSpots() {
         return occupiedSpace.get(ParkingSpotType.REGULAR);
     }
 
-    public List<VehicleType> getLargeSpots() {
+    public List<VehicleType> getVehiclesInLargeSpots() {
         return occupiedSpace.get(ParkingSpotType.LARGE);
     }
 
