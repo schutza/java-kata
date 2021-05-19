@@ -1,4 +1,4 @@
-name: Java CI
+name: java-kata-ci
 
 on: [push]
 
