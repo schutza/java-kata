@@ -73,35 +73,57 @@ public class CapacityAnalyser {
                 break;
             case CAR:
                 occupancy = occupancyForCar();
+                break;
             case MOTORCYCLE:
+                occupancy = occupancyForMotorcycle();
                 break;
         }
         return occupancy;
     }
 
     private int occupancyForVan() {
+        VehicleType vehicleType = VehicleType.VAN;
         // check in large spots
         int vanOccupancyLargeSpots = parkingLot.getLargeSpots()
-            .stream().filter(parkedVehicleType -> parkedVehicleType == VehicleType.VAN)
+            .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
         // check in regular spots
         int vanOccupancyRegularSpots = parkingLot.getRegularSpots()
-            .stream().filter(parkedVehicleType -> parkedVehicleType == VehicleType.VAN)
+            .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
 
         return vanOccupancyLargeSpots + (vanOccupancyRegularSpots / 3);
     }
 
     private int occupancyForCar() {
+        VehicleType vehicleType = VehicleType.CAR;
         // check in large spots
         int carOccupancyRegularSpots = parkingLot.getRegularSpots()
-            .stream().filter(parkedVehicleType -> parkedVehicleType == VehicleType.CAR)
+            .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
         // check in regular spots
         int carOccupancyCompactSpots = parkingLot.getCompactSpots()
-            .stream().filter(parkedVehicleType -> parkedVehicleType == VehicleType.CAR)
+            .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
             .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
 
         return carOccupancyRegularSpots + carOccupancyCompactSpots;
+    }
+
+    private int occupancyForMotorcycle() {
+        VehicleType vehicleType = VehicleType.MOTORCYCLE;
+        // check in all spots - compact spots first
+        int motorcycleOccupancyCompactSpots = parkingLot.getCompactSpots()
+            .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
+            .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
+        // check in all spots - regular spots first
+        int motorcycleOccupancyRegularSpots = parkingLot.getRegularSpots()
+            .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
+            .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
+        // check in all spots - large spots first
+        int motorcycleOccupancyLargeSpots = parkingLot.getLargeSpots()
+            .stream().filter(parkedVehicleType -> parkedVehicleType == vehicleType)
+            .reduce(0, (subtotal, element) -> subtotal + 1, Integer::sum);
+
+        return motorcycleOccupancyCompactSpots + motorcycleOccupancyRegularSpots + motorcycleOccupancyLargeSpots;
     }
 }

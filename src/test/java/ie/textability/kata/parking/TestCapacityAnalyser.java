@@ -209,4 +209,18 @@ public class TestCapacityAnalyser {
         assertEquals(4, actualVanOccupancy);
     }
 
+    @Test
+    void testMotorcycleOccupancy() {
+        // given
+        int numCompactSpots = 3, numRegularSpots = 5, numLargeSpots = 2;
+        ParkingLot occupiedParkingLotOverflownWithVans = new ParkingLot(numCompactSpots, numRegularSpots,
+            numLargeSpots)
+            .withVan().withVan().withCar().withVan().withCar().withCar().withCar().withMotorcycle();
+        CapacityAnalyser capacityAnalyser = new CapacityAnalyser(occupiedParkingLotOverflownWithVans);
+        // when
+        int actualMotorcycleOccupancy = capacityAnalyser.occupancyByVehicleType(VehicleType.MOTORCYCLE);
+        // then
+        assertEquals(1, actualMotorcycleOccupancy);
+    }
+
 }
